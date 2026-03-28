@@ -1,0 +1,29 @@
+# LLM Self-Consistent Error Measurement Pipeline
+# Python 3.10+
+
+# HuggingFace
+huggingface_hub>=0.20.0
+datasets>=2.16.0
+requests>=2.31.0
+
+# NLI-based Semantic Equivalence (DeBERTa)
+torch>=2.0.0
+transformers>=4.36.0
+sentencepiece>=0.1.99  # Required for some tokenizers
+
+# Data processing
+pandas>=2.0.0
+pyarrow>=14.0.0  # For Parquet support
+
+# Visualization
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Configuration
+pyyaml>=6.0.0
+
+# Progress bars
+tqdm>=4.66.0
+
+# Utilities
+python-dotenv>=1.0.0

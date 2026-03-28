@@ -1,0 +1,7 @@
+track,metric,n_versions,slope_pp_per_version,intercept
+grok_version,accuracy_pct,4,8.289962825278812,45.47707558859972
+grok_version,ce_rate_pct,4,-5.898389095415117,25.340768277571236
+llama_scale_version,accuracy_pct,4,4.981412639405205,34.324659231722414
+llama_scale_version,ce_rate_pct,4,2.3296158612143723,10.037174721189592
+qwen_scale_version,accuracy_pct,4,5.8736059479553955,41.94547707558856
+qwen_scale_version,ce_rate_pct,4,0.520446096654276,16.604708798017334

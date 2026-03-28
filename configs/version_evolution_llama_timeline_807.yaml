@@ -1,0 +1,198 @@
+# Llama-only version-evolution timeline on matched 807 TruthfulQA rows.
+# Uses OpenRouter for all checkpoints to avoid provider confounds.
+
+protocol:
+  version: v3
+  high_rigor: true
+  prompt_version: qa-short-v1
+
+commercial_models: []
+opensource_models:
+  - provider: openrouter
+    model: meta-llama/llama-3-8b-instruct
+    name: "Llama 3 8B Instruct (OpenRouter, 2024-04-18)"
+    snapshot_id: meta-llama/llama-3-8b-instruct
+    release_date: "2024-04-18"
+    track: llama-capability-openrouter
+    family: llama
+    version_index: 0
+
+  - provider: openrouter
+    model: meta-llama/llama-3-70b-instruct
+    name: "Llama 3 70B Instruct (OpenRouter, 2024-04-18)"
+    snapshot_id: meta-llama/llama-3-70b-instruct
+    release_date: "2024-04-18"
+    track: llama-capability-openrouter
+    family: llama
+    version_index: 1
+
+  - provider: openrouter
+    model: meta-llama/llama-3.1-8b-instruct
+    name: "Llama 3.1 8B Instruct (OpenRouter, 2024-07-23)"
+    snapshot_id: meta-llama/llama-3.1-8b-instruct
+    release_date: "2024-07-23"
+    track: llama-capability-openrouter
+    family: llama
+    version_index: 2
+
+  - provider: openrouter
+    model: meta-llama/llama-3.3-70b-instruct
+    name: "Llama 3.3 70B Instruct (OpenRouter, 2024-12-06)"
+    snapshot_id: meta-llama/llama-3.3-70b-instruct
+    release_date: "2024-12-06"
+    track: llama-capability-openrouter
+    family: llama
+    version_index: 3
+
+  - provider: openrouter
+    model: meta-llama/llama-4-maverick
+    name: "Llama 4 Maverick (OpenRouter, 2025-04-05)"
+    snapshot_id: meta-llama/llama-4-maverick
+    release_date: "2025-04-05"
+    track: llama-capability-openrouter
+    family: llama
+    version_index: 4
+
+judge:
+  method: nli
+  enforce_cross_family: false
+  repeat_eval_fraction: 0.10
+  nli:
+    model: MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli
+    entailment_threshold: 0.5
+    different_threshold: 0.3
+    max_length: 512
+    device: null
+  llm_judge:
+    provider: openai
+    model: gpt-5.2
+    max_new_tokens: 320
+    cot_reasoning: true
+  llm_judge_ensemble:
+    - provider: openai
+      model: gpt-5.2
+    - provider: anthropic
+      model: claude-sonnet-4-5
+    - provider: xai
+      model: grok-4-1-fast-non-reasoning
+  ensemble:
+    failure_policy: skip
+  adjudicator:
+    enabled: true
+    provider: openai
+    model: gpt-5.2
+    max_new_tokens: 320
+  llm:
+    provider: anthropic
+    model: claude-sonnet-4-20250514
+
+inference:
+  greedy:
+    do_sample: false
+    temperature: 0.01
+    top_p: 1.0
+    top_k: null
+    max_new_tokens: 100
+  stochastic:
+    do_sample: true
+    temperature: 0.7
+    top_p: 0.9
+    num_samples: 10
+    max_new_tokens: 100
+
+collection:
+  required_samples: 10
+  strict_samples: true
+  retry_incomplete: true
+  max_concurrency_per_provider: 4
+
+correctness:
+  use_nli_fallback: false
+  nli_entailment_threshold: 0.5
+  strip_articles: true
+  max_length_ratio: 3.0
+
+semantic:
+  equivalence_threshold: 0.9
+  unclear_treatment: exclude
+
+semantic_entropy:
+  use_normalized: true
+  threshold: 0.35
+
+hybrid:
+  enabled: true
+  thresholds:
+    eq_same_hi: 0.70
+    eq_diff_lo: 0.30
+    corr_hi: 0.70
+    corr_lo: 0.30
+  borderline_judge:
+    provider: openai
+    model: gpt-5.2
+    equivalence_max_new_tokens: 220
+    correctness_max_new_tokens: 260
+  calibration_file: /Users/simar/LLM_Hallucination_Measure/data/calibration/hybrid_thresholds_frozen.json
+
+dataset:
+  name: truthful_qa
+  source: csv
+  path: TruthfulQA_807_matched.csv
+  split: validation
+  max_questions: null
+  benchmarks:
+    - name: truthful_qa
+      source: csv
+      path: TruthfulQA_807_matched.csv
+      split: validation
+      max_questions: null
+
+contamination:
+  similarity_threshold: 0.93
+  jaccard_threshold: 0.85
+  lookback: 5000
+
+rate_limits:
+  openai:
+    initial_delay: 1.0
+    max_delay: 60.0
+    backoff_factor: 2.0
+  anthropic:
+    initial_delay: 1.0
+    max_delay: 60.0
+    backoff_factor: 2.0
+  xai:
+    initial_delay: 2.0
+    max_delay: 60.0
+    backoff_factor: 2.0
+  openrouter:
+    initial_delay: 2.0
+    max_delay: 60.0
+    backoff_factor: 2.0
+
+rate_limit:
+  initial_delay: 2.0
+  max_delay: 60.0
+  backoff_factor: 2.0
+
+calibration:
+  nli_calibration_file: null
+  hybrid_calibration_file: /Users/simar/LLM_Hallucination_Measure/data/calibration/hybrid_thresholds_frozen.json
+  annotation_sample_size: 50
+
+output:
+  results_dir: data/results
+  raw_dir: raw
+  evaluated_dir: evaluated
+  results_file: results_version_evolution_llama_timeline_807.jsonl
+  evaluated_file: results_version_evolution_llama_timeline_807_eval.jsonl
+  parquet_file: results_version_evolution_llama_timeline_807.parquet
+  immutable_runs: true
+
+analysis:
+  require_uniform_protocol: true
+
+experiment:
+  run_commercial: false
+  run_opensource: true
+  verbose: false

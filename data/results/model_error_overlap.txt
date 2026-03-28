@@ -1,0 +1,33 @@
+==========================================================================================
+SELF-CONSISTENT ERROR OVERLAP BETWEEN MODELS (ALL PAIRS)
+==========================================================================================
+Input: /Users/simar/LLM_Hallucination_Measure/data/results/evaluated/results_v2_phase2_eval_no_gemini_4842.final.analysis_ready.skip_greedy_semantic_eval.jsonl
+Loaded 4842 rows across 6 models
+Threshold column: error_label_0.9
+
+Claude Opus 4.6 (Anthropic) questions= 807  self_consistent_errors= 100
+DeepSeek V3.2 (DeepSeek)   questions= 807  self_consistent_errors= 168
+GPT-5.2 (OpenAI)           questions= 807  self_consistent_errors=  79
+Grok 4 (xAI)               questions= 807  self_consistent_errors= 106
+Llama 4 Maverick 17B (Groq) questions= 807  self_consistent_errors= 148
+Qwen3 Next 80B (OpenRouter) questions= 807  self_consistent_errors= 162
+
+PAIRWISE SUMMARY
+------------------------------------------------------------------------------------------
+Model A                  Model B                  CommonQ   A_SC   B_SC  Overlap  Jaccard     p(>=k)
+------------------------------------------------------------------------------------------
+Claude Opus 4.6 (Anthropic) DeepSeek V3.2 (DeepSeek)     807    100    168       73    0.374   1.98e-34
+Claude Opus 4.6 (Anthropic) GPT-5.2 (OpenAI)             807    100     79       41    0.297   3.04e-20
+Claude Opus 4.6 (Anthropic) Grok 4 (xAI)                 807    100    106       45    0.280   7.19e-18
+Claude Opus 4.6 (Anthropic) Llama 4 Maverick 17B (Groq)     807    100    148       51    0.259   8.19e-16
+Claude Opus 4.6 (Anthropic) Qwen3 Next 80B (OpenRouter)     807    100    162       50    0.236   4.07e-13
+DeepSeek V3.2 (DeepSeek) GPT-5.2 (OpenAI)             807    168     79       51    0.260   3.11e-19
+DeepSeek V3.2 (DeepSeek) Grok 4 (xAI)                 807    168    106       66    0.317   3.65e-24
+DeepSeek V3.2 (DeepSeek) Llama 4 Maverick 17B (Groq)     807    168    148       83    0.356   6.67e-27
+DeepSeek V3.2 (DeepSeek) Qwen3 Next 80B (OpenRouter)     807    168    162       86    0.352    1.1e-25
+GPT-5.2 (OpenAI)         Grok 4 (xAI)                 807     79    106       43    0.303   3.29e-21
+GPT-5.2 (OpenAI)         Llama 4 Maverick 17B (Groq)     807     79    148       46    0.254   3.09e-17
+GPT-5.2 (OpenAI)         Qwen3 Next 80B (OpenRouter)     807     79    162       48    0.249   3.39e-17
+Grok 4 (xAI)             Llama 4 Maverick 17B (Groq)     807    106    148       58    0.296   2.73e-20
+Grok 4 (xAI)             Qwen3 Next 80B (OpenRouter)     807    106    162       61    0.295   1.59e-20
+Llama 4 Maverick 17B (Groq) Qwen3 Next 80B (OpenRouter)     807    148    162       79    0.342   1.06e-24

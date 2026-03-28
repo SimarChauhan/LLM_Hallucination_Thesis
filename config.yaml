@@ -1,0 +1,357 @@
+# LLM Self-Consistent Error Measurement Pipeline Configuration
+# Supports both commercial APIs and open-source models
+# Based on thesis proposal: Self-Consistent Error Detection in Closed and Open LLMs
+
+# =============================================================================
+# HIGH-RIGOR PROTOCOL CONTROLS
+# =============================================================================
+
+protocol:
+  version: v3
+  high_rigor: true
+  prompt_version: qa-short-v1
+
+# =============================================================================
+# MODELS CONFIGURATION
+# =============================================================================
+
+# Commercial API models (black-box)
+# These are accessed via their respective APIs
+commercial_models:
+  # OpenAI - GPT-5 family (latest: GPT-5.2, Dec 2025)
+  - provider: openai
+    model: gpt-5.2
+    name: "GPT-5.2 (OpenAI)"
+  
+  # Anthropic - Claude 4 family (latest: May 2025)
+  - provider: anthropic
+    model: claude-sonnet-4-20250514
+    name: "Claude Sonnet 4 (Anthropic)"
+  - provider: anthropic
+    model: claude-opus-4-6
+    name: "Claude Opus 4.6 (Anthropic)"
+  
+  # Google Gemini model via Google API
+  - provider: google
+    model: google/gemini-3-flash-preview
+    name: "Gemini 3 Flash (Google)"
+  
+  # xAI - Grok 4 family (non-reasoning for consistent behavior)
+  - provider: xai
+    model: grok-4-fast-non-reasoning
+    name: "Grok 4 (xAI)"
+
+# Open-box models (accessible weights / open API)
+opensource_models:
+  # DeepSeek V3.2 - via DeepSeek API (OpenAI-compatible)
+  - provider: deepseek
+    model: deepseek-chat
+    name: "DeepSeek V3.2 (DeepSeek)"
+  
+  # HuggingFace Inference API models
+  # Note: Llama 4 Scout is on Hub but NOT deployed on Inference API (as of 2025)
+  # Qwen 2.5 8B - Deployed on HF Inference API (Qwen3-8B-Instruct not on router)
+  - provider: huggingface
+    model: Qwen/Qwen2.5-8B-Instruct
+    name: "Qwen 2.5 8B Instruct"
+  
+  # Llama 3.1 8B - Deployed on HF Inference API (Llama 4 Scout is not on the API)
+  - provider: huggingface
+    model: meta-llama/Llama-3.1-8B-Instruct
+    name: "Llama 3.1 8B Instruct"
+
+  # Llama 4 Maverick 17B - via Groq (OpenAI-compatible API)
+  - provider: groq
+    model: meta-llama/llama-4-maverick-17b-128e-instruct
+    name: "Llama 4 Maverick 17B (Groq)"
+
+  # Qwen3 Next 80B - via OpenRouter
+  - provider: openrouter
+    model: qwen/qwen3-next-80b-a3b-instruct
+    name: "Qwen3 Next 80B (OpenRouter)"
+
+# Semantic Equivalence Judge Configuration
+# Used for equivalence checking between greedy and stochastic samples
+judge:
+  method: nli                          # "nli" for DeBERTa (equivalence checking)
+  enforce_cross_family: false           # Enforce judge family disjoint from model-under-test
+  repeat_eval_fraction: 0.10           # Deterministic repeated-judge sampling fraction
+  
+  # NLI settings (used for equivalence + correctness fallback)
+  nli:
+    model: MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli  # MNLI-style NLI; microsoft/deberta-v3-large-mnli returns 404 on HF
+    entailment_threshold: 0.5          # Min probability for "same" (both directions); raise to 0.6–0.7 to reduce false positives
+    different_threshold: 0.3           # Below this in either direction → "different"; raise to 0.35–0.4 to reduce false "same"
+    max_length: 512                    # Max tokens per premise/hypothesis; NLI models often trained on 512
+    device: null                       # null=auto-detect, or "cuda"/"mps"/"cpu"
+  
+  # LLM-as-judge settings (for correctness fallback – Step 3 of cascade)
+  # Used by reeval_results.py --use-llm-judge
+  # Enhanced: CoT reasoning and ensemble voting
+  llm_judge:
+    provider: openai                   # Cross-model: judge should be different family than model under test
+    model: gpt-4o                      # SimpleQA-style grading (used when ensemble not set)
+    max_new_tokens: 320                # Higher cap to reduce truncated CoT/JSON outputs (parser failures)
+    cot_reasoning: true                # true = judge returns reasoning then grade (A/B/C); false = grade only
+
+  # 3-judge ensemble (majority vote)
+  llm_judge_ensemble:
+    - provider: openai
+      model: gpt-5.2
+    - provider: anthropic
+      model: claude-sonnet-4-5
+    - provider: xai
+      model: grok-4-1-fast-non-reasoning
+
+  # Ensemble settings
+  ensemble:
+    failure_policy: skip               # "skip" (drop failed judges) or "false" (count as INCORRECT - old behavior)
+
+  # Phase-2 adjudicator fallback (only used when Phase-1 majority is unresolved)
+  adjudicator:
+    enabled: true
+    provider: openai
+    model: gpt-5.2
+    max_new_tokens: 320
+
+  # Legacy LLM-as-judge for equivalence (kept for backward compatibility)
+  llm:
+    provider: anthropic
+    model: claude-sonnet-4-20250514
+
+# =============================================================================
+# INFERENCE SETTINGS
+# =============================================================================
+
+inference:
+  greedy:
+    do_sample: false      # Critical: disable sampling for determinism
+    temperature: 0.01     # Near-deterministic (some APIs require > 0)
+    top_p: 1.0
+    top_k: null
+    max_new_tokens: 100   # Increased for TruthfulQA's longer answers
+  
+  stochastic:
+    do_sample: true
+    temperature: 0.7       # Moderate diversity for stochastic sampling
+    top_p: 0.9
+    num_samples: 10        # 10 samples per question as per proposal (5-10 range)
+    max_new_tokens: 100
+
+# =============================================================================
+# COLLECTION RELIABILITY
+# =============================================================================
+
+collection:
+  required_samples: 10
+  strict_samples: true
+  retry_incomplete: true
+  max_concurrency_per_provider: 4
+
+# =============================================================================
+# CORRECTNESS CHECKING
+# =============================================================================
+
+correctness:
+  # Correctness uses LLM judge evaluation (no string/NLI correctness fallback)
+  use_nli_fallback: false
+  nli_entailment_threshold: 0.5  # Legacy/deprecated for correctness cascade (ignored)
+  strip_articles: true       # Remove "the", "a", "an"
+  max_length_ratio: 3.0      # For containment match length guard
+
+# =============================================================================
+# SEMANTIC EQUIVALENCE
+# =============================================================================
+
+semantic:
+  equivalence_threshold: 0.9  # Primary reporting threshold (sensitivity still reports 1.0/0.9/0.8/0.7)
+  unclear_treatment: exclude  # "exclude" from ratio, or "count_as_different"
+
+# Semantic entropy labeling controls (explicitly set for reproducibility)
+semantic_entropy:
+  use_normalized: true
+  threshold: 0.35
+
+# =============================================================================
+# HYBRID NLI + BORDERLINE GPT JUDGING
+# =============================================================================
+
+hybrid:
+  enabled: true
+
+  # NLI decision rules
+  thresholds:
+    eq_same_hi: 0.70    # both directions >= this => same
+    eq_diff_lo: 0.30    # either direction <= this => different
+    corr_hi: 0.70       # sample->best_gold >= this => CORRECT
+    corr_lo: 0.30       # sample->best_gold <= this => INCORRECT
+
+  # Borderline judge (used only between hi/lo bands)
+  borderline_judge:
+    provider: openai
+    model: gpt-5.2
+    equivalence_max_new_tokens: 220
+    correctness_max_new_tokens: 260
+
+  # Optional frozen calibration artifact from scripts/calibrate_hybrid_thresholds.py
+  calibration_file: /Users/simar/LLM_Hallucination_Measure/data/calibration/hybrid_thresholds_frozen.json
+
+# =============================================================================
+# DATASET CONFIGURATION
+# =============================================================================
+
+dataset:
+  name: truthful_qa          # TruthfulQA as per proposal
+  source: csv                # "csv" = TruthfulQA.csv (full correct-answers list); omit for Hugging Face
+  path: TruthfulQA.csv       # used when source is csv
+  split: validation          # TruthfulQA only has validation split (HF only)
+  max_questions: null        # Full 817 questions
+  benchmarks:
+    - name: truthful_qa
+      source: csv
+      path: TruthfulQA.csv
+      split: validation
+      max_questions: null
+    # - name: trivia_qa
+    #   subset: rc
+    #   split: validation
+    #   max_questions: 300
+    # - name: boolq
+    #   split: validation
+    #   max_questions: 300
+  
+  # Optional: filter by specific categories
+  # Uncomment and modify to focus on specific vulnerability areas
+  # categories:
+  #   - Misconceptions
+  #   - Health
+  #   - Politics
+  #   - Conspiracies
+
+# =============================================================================
+# CONTAMINATION / OVERLAP CHECKS
+# =============================================================================
+
+contamination:
+  similarity_threshold: 0.93
+  jaccard_threshold: 0.85
+  lookback: 5000
+
+# =============================================================================
+# RATE LIMITING
+# =============================================================================
+
+# Per-provider rate limits (requests per minute)
+# Adjust based on your API tier
+rate_limits:
+  openai:
+    initial_delay: 1.0
+    max_delay: 60.0
+    backoff_factor: 2.0
+  anthropic:
+    initial_delay: 1.0
+    max_delay: 60.0
+    backoff_factor: 2.0
+  google:
+    initial_delay: 1.0
+    max_delay: 60.0
+    backoff_factor: 2.0
+  xai:
+    initial_delay: 2.0
+    max_delay: 60.0
+    backoff_factor: 2.0
+  huggingface:
+    initial_delay: 2.0
+    max_delay: 60.0
+    backoff_factor: 2.0
+  openrouter:
+    initial_delay: 2.0
+    max_delay: 60.0
+    backoff_factor: 2.0
+
+# Default rate limit settings (fallback)
+rate_limit:
+  initial_delay: 2.0      # seconds
+  max_delay: 60.0         # seconds
+  backoff_factor: 2.0
+
+# =============================================================================
+# CALIBRATION (optional)
+# =============================================================================
+# NLI threshold calibration from human annotations; annotation sample size for export
+calibration:
+  nli_calibration_file: null           # path to JSON with calibrated entailment/different thresholds
+  hybrid_calibration_file: /Users/simar/LLM_Hallucination_Measure/data/calibration/hybrid_thresholds_frozen.json
+  annotation_sample_size: 50           # default size for --export-annotation-sample
+
+# =============================================================================
+# OUTPUT PATHS
+# =============================================================================
+# data/results/
+#   raw/        – Phase 1 pipeline output (greedy + stochastic, no eval)
+#   evaluated/  – Phase 2 re-eval output (correctness, equivalence, labels)
+#   analysis/   – Tables, plots, reports from analyze_results.py
+
+output:
+  results_dir: data/results            # base dir
+  raw_dir: raw
+  evaluated_dir: evaluated
+  results_file: results_v2.jsonl      # Phase 1 writes to raw/<results_file>
+  evaluated_file: results_v2_eval.jsonl  # Phase 2 writes to evaluated/<evaluated_file>
+  parquet_file: results_v2.parquet
+  immutable_runs: true
+
+# =============================================================================
+# ANALYSIS CONTROLS
+# =============================================================================
+
+analysis:
+  require_uniform_protocol: true
+
+# =============================================================================
+# EXPERIMENT MODES
+# =============================================================================
+
+# Which models to run (useful for phased experiments)
+experiment:
+  # Run commercial models (requires API keys)
+  run_commercial: true    # ON for OpenAI GPT-5.2 run
+  
+  # Run open-source / open-box models (DeepSeek, HuggingFace)
+  run_opensource: true
+  
+  # Enable verbose logging
+  verbose: false
+
+# =============================================================================
+# TWO-PHASE PIPELINE (Recommended)
+# =============================================================================
+#
+# PHASE 1 – DATA COLLECTION (expensive: API calls to models under test)
+#   python scripts/run_pipeline.py --dry-run            # validate first
+#   python scripts/run_pipeline.py --models "Claude"    # collect one model
+#   python scripts/run_pipeline.py                      # collect all models
+#
+#   This always generates greedy + N stochastic samples.
+#   No correctness/equivalence evaluation is done here.
+#
+# PHASE 2 – RE-EVALUATION (cheap: local NLI + optional LLM judge)
+#   python scripts/reeval_results.py                     # full re-eval
+#   python scripts/reeval_results.py --only-missing      # only null records
+#   python scripts/reeval_results.py --use-llm-judge     # enable LLM fallback
+#   python scripts/reeval_results.py --models "GPT"      # re-eval one model
+#
+#   Correctness evaluation: LLM-as-judge
+#   Equivalence: NLI (bidirectional)
+#   Labeling: reliably_correct | fragile_correct |
+#             self_consistent_error | inconsistent_error
+#
+# Cost Estimates (817 questions, 10 samples each):
+#   - Open-source (HuggingFace): FREE
+#   - OpenAI GPT-5.2: ~$15-25
+#   - Anthropic Claude: ~$15-25
+#   - Google Gemini: ~$5-10
+#   - xAI Grok: ~$15-25
+#   - NLI Judge (DeBERTa): FREE (local)
+#   - LLM Judge re-eval: ~$2-5 (only null cases)
+#   - Total collection: ~$50-85

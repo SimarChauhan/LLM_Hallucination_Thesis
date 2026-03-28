@@ -1,0 +1,4 @@
+group,run_dirs,unique_targets,sample_seed,split_seed,split_train_frac,split_val_frac,split_test_frac,ce_pool_total,ce_pool_correct,ce_pool_ce,train_correct,train_ce,val_correct,val_ce,test_correct,test_ce
+legacy_wb_probe_out,5,2,42,42,0.8,0.1,0.1,542,271,271,226,223,20,21,25,27
+qwen35_phi_all6,6,6,42,42,0.8,0.1,0.1,1306,653,653,555,527,41,58,57,68
+smollm3_phi_base,6,6,42,42,0.8,0.1,0.1,1306,653,653,555,527,41,58,57,68

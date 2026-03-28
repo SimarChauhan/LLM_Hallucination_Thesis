@@ -1,0 +1,14 @@
+{
+  "out_dir": "data/results/analysis/version_evolution_equiv_only_20260319",
+  "combined_rows": 9684,
+  "models": 12,
+  "questions": 817,
+  "report": "data/results/analysis/version_evolution_equiv_only_20260319/report.md",
+  "figures": [
+    "data/results/analysis/version_evolution_equiv_only_20260319/ce_rate_over_time_t0p9.png",
+    "data/results/analysis/version_evolution_equiv_only_20260319/ce_rate_threshold_sensitivity.png",
+    "data/results/analysis/version_evolution_equiv_only_20260319/pairwise_ce_deltas_consecutive_t0p9.png"
+  ],
+  "validation": "data/results/analysis/version_evolution_equiv_only_20260319/validation_checks.json",
+  "trend_light": "data/results/analysis/version_evolution_equiv_only_20260319/trend_tests_light_t0p9.csv"
+}

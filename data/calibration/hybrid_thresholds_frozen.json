@@ -1,0 +1,9 @@
+{
+  "calibration_id": "hybrid-frozen-2026-02-19",
+  "created_at": "2026-02-19T00:00:00Z",
+  "eq_same_hi": 0.7,
+  "eq_diff_lo": 0.3,
+  "corr_hi": 0.7,
+  "corr_lo": 0.3,
+  "notes": "Frozen thesis profile thresholds; replace with calibrated artifact when available."
+}

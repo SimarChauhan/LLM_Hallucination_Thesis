@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+env/
+ENV/
+
+# Environment / secrets
+.env
+.env.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary folders
+tmp/
+archive/
+downloads/
+output/
+progress_report/
+
+# Logs
+*.log
+logs/
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.toc
+*.run.xml
+*.synctex.gz
+
+# Generated binary artifacts
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Known large generated artifact (kept out of git)
+data/results/analysis/version_evolution_equiv_only_20260319/combined_version_evolution_equiv_only.jsonl

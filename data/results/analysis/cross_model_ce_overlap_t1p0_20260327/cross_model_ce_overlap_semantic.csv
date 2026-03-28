@@ -1,0 +1,16 @@
+model_a,model_b,ce_a,ce_b,both_ce_overlap,jaccard,same_wrong_answer,unclear_equivalence,same_wrong_pct
+DeepSeek V3.2 (DeepSeek),Qwen3 Next 80B (OpenRouter),143,148,77,0.36,59,3,76.6
+DeepSeek V3.2 (DeepSeek),Llama 4 Maverick 17B (Groq),143,125,71,0.36,53,2,74.6
+Llama 4 Maverick 17B (Groq),Qwen3 Next 80B (OpenRouter),125,148,69,0.338,56,2,81.2
+Claude Opus 4.6 (Anthropic),DeepSeek V3.2 (DeepSeek),91,143,60,0.345,41,3,68.3
+DeepSeek V3.2 (DeepSeek),Grok 4 (xAI),143,88,51,0.283,33,2,64.7
+Grok 4 (xAI),Qwen3 Next 80B (OpenRouter),88,148,50,0.269,39,2,78.0
+Grok 4 (xAI),Llama 4 Maverick 17B (Groq),88,125,45,0.268,32,3,71.1
+Claude Opus 4.6 (Anthropic),Llama 4 Maverick 17B (Groq),91,125,43,0.249,28,2,65.1
+Claude Opus 4.6 (Anthropic),Qwen3 Next 80B (OpenRouter),91,148,43,0.219,30,1,69.8
+GPT-5.2 (OpenAI),Qwen3 Next 80B (OpenRouter),61,148,39,0.229,31,2,79.5
+Claude Opus 4.6 (Anthropic),Grok 4 (xAI),91,88,38,0.27,25,4,65.8
+DeepSeek V3.2 (DeepSeek),GPT-5.2 (OpenAI),143,61,38,0.229,28,4,73.7
+GPT-5.2 (OpenAI),Llama 4 Maverick 17B (Groq),61,125,36,0.24,26,2,72.2
+Claude Opus 4.6 (Anthropic),GPT-5.2 (OpenAI),91,61,30,0.246,22,2,73.3
+GPT-5.2 (OpenAI),Grok 4 (xAI),61,88,30,0.252,26,1,86.7

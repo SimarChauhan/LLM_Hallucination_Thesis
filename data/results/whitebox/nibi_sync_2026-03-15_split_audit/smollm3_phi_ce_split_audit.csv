@@ -1,0 +1,7 @@
+run_dir,target,response,verifier,ce_pool_total,ce_pool_correct,ce_pool_ce,train_total,train_correct,train_ce,val_total,val_correct,val_ce,test_total,test_correct,test_ce,metrics_test_n_values,metrics_test_pos_rate_values,test_n_matches,test_positive_rate_matches
+Claude_Opus_4.6_Anthropic___microsoft_phi-4-mini-instruct,Claude Opus 4.6 (Anthropic),HuggingFaceTB/SmolLM3-3B,microsoft/Phi-4-mini-instruct,180,90,90,145,72,73,14,3,11,21,15,6,21,0.285714,True,True
+DeepSeek_V3.2_DeepSeek___microsoft_phi-4-mini-instruct,DeepSeek V3.2 (DeepSeek),HuggingFaceTB/SmolLM3-3B,microsoft/Phi-4-mini-instruct,286,143,143,241,125,116,21,10,11,24,8,16,24,0.666667,True,True
+GPT-5.2_OpenAI___microsoft_phi-4-mini-instruct,GPT-5.2 (OpenAI),HuggingFaceTB/SmolLM3-3B,microsoft/Phi-4-mini-instruct,122,61,61,99,51,48,11,4,7,12,6,6,12,0.500000,True,True
+Grok_4_xAI___microsoft_phi-4-mini-instruct,Grok 4 (xAI),HuggingFaceTB/SmolLM3-3B,microsoft/Phi-4-mini-instruct,176,88,88,148,81,67,12,4,8,16,3,13,16,0.812500,True,True
+Llama_4_Maverick_17B_Groq___microsoft_phi-4-mini-instruct,Llama 4 Maverick 17B (Groq),HuggingFaceTB/SmolLM3-3B,microsoft/Phi-4-mini-instruct,250,125,125,209,106,103,19,10,9,22,9,13,22,0.590909,True,True
+Qwen3_Next_80B_OpenRouter___microsoft_phi-4-mini-instruct,Qwen3 Next 80B (OpenRouter),HuggingFaceTB/SmolLM3-3B,microsoft/Phi-4-mini-instruct,292,146,146,240,120,120,22,10,12,30,16,14,30,0.466667,True,True

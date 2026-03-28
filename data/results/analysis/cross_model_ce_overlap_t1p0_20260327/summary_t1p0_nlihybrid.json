@@ -1,0 +1,15 @@
+{
+  "generated_on": "2026-03-27",
+  "ce_threshold": 1.0,
+  "equivalence_method": "nli_hybrid",
+  "llm_fallback_borderline": false,
+  "data_file": "data/results/evaluated/results_v2_phase2_eval_no_gemini_4842.final.analysis_ready.skip_greedy_semantic_eval.jsonl",
+  "n_pairs": 15,
+  "total_ce_overlap": 720,
+  "total_same_wrong": 529,
+  "total_unclear": 35,
+  "overall_same_wrong_pct": 73.5,
+  "jaccard_min": 0.219,
+  "jaccard_max": 0.36,
+  "jaccard_mean": 0.277
+}

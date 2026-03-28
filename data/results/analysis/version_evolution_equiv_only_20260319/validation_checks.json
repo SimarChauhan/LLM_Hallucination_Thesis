@@ -1,0 +1,104 @@
+{
+  "combined_rows": 9684,
+  "expected_combined_rows": 9684,
+  "combined_rows_match_expected": true,
+  "unique_model_question_keys": 9684,
+  "keys_match_rows": true,
+  "rows_per_model": {
+    "Grok 3 (xAI, 2025-06-10)": 807,
+    "Grok 4 (xAI)": 807,
+    "Grok 4.1 Fast Reasoning (xAI, 2025-11-19)": 807,
+    "Grok 4.20 Beta 0309 Reasoning (xAI, 2026-03-09)": 807,
+    "Llama 3 8B Instruct (OpenRouter, 2024-04-18)": 807,
+    "Llama 3.1 8B Instruct (OpenRouter, 2024-07-23)": 807,
+    "Llama 3.3 70B Instruct (OpenRouter, 2024-12-06)": 807,
+    "Llama 4 Maverick 17B (Groq)": 807,
+    "Qwen2.5 72B Instruct (OpenRouter, 2024-11-26)": 807,
+    "Qwen2.5 7B Instruct (OpenRouter, 2024-09-16)": 807,
+    "Qwen3 30B A3B 2507 (OpenRouter, 2025-07-28)": 807,
+    "Qwen3 Next 80B (OpenRouter)": 807
+  },
+  "all_models_have_807_rows": true,
+  "n_models": 12,
+  "n_questions": 817,
+  "new_file_protocol_checks": {
+    "qwen": {
+      "rows": 2421,
+      "keys": 2421,
+      "judge_protocol_nunique": 1,
+      "judge_protocol_values": [
+        "precomputed_greedy+equiv_only_hybrid_borderline(openai/gpt-5.2)"
+      ],
+      "hybrid_enabled_values": [
+        "True"
+      ],
+      "equivalence_only_eval_values": [
+        "True"
+      ]
+    },
+    "llama": {
+      "rows": 2421,
+      "keys": 2421,
+      "judge_protocol_nunique": 1,
+      "judge_protocol_values": [
+        "precomputed_greedy+equiv_only_hybrid_borderline(openai/gpt-5.2)"
+      ],
+      "hybrid_enabled_values": [
+        "True"
+      ],
+      "equivalence_only_eval_values": [
+        "True"
+      ]
+    },
+    "grok": {
+      "rows": 2421,
+      "keys": 2421,
+      "judge_protocol_nunique": 1,
+      "judge_protocol_values": [
+        "precomputed_greedy+equiv_only_hybrid_borderline(openai/gpt-5.2)"
+      ],
+      "hybrid_enabled_values": [
+        "True"
+      ],
+      "equivalence_only_eval_values": [
+        "True"
+      ]
+    }
+  },
+  "equivalence_fallback_counts": {
+    "qwen": {
+      "NLI": 23598,
+      "LLM": 612,
+      "OTHER": 0
+    },
+    "llama": {
+      "NLI": 23700,
+      "LLM": 510,
+      "OTHER": 0
+    },
+    "grok": {
+      "NLI": 23150,
+      "LLM": 1060,
+      "OTHER": 0
+    }
+  },
+  "one_failed_mattered_proxy_from_equiv_only": {
+    "qwen": {
+      "one_failed_rows": 216,
+      "mattered_proxy_rows": 0
+    },
+    "llama": {
+      "one_failed_rows": 95,
+      "mattered_proxy_rows": 0
+    },
+    "grok": {
+      "one_failed_rows": 29,
+      "mattered_proxy_rows": 0
+    }
+  },
+  "common_question_ids_by_track": {
+    "grok_version": 797,
+    "llama_scale_version": 797,
+    "qwen_scale_version": 797
+  }
+}

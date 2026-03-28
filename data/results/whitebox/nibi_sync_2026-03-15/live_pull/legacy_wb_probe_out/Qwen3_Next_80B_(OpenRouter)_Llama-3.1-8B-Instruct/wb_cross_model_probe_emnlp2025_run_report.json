@@ -1,0 +1,64 @@
+{
+  "input": "/home/ssimran5/LLM_Hallucination_Measure/data/results/evaluated/results_v2_phase2_eval_no_gemini_4842.final.analysis_ready.skip_greedy_semantic_eval.jsonl",
+  "target_model_name": "Qwen3 Next 80B (OpenRouter)",
+  "subset_mode": "both",
+  "subset_counts": {
+    "ce": {
+      "rows": 292,
+      "positive_correct": 146,
+      "negative_error": 146
+    },
+    "ie": {
+      "rows": 202,
+      "positive_correct": 101,
+      "negative_error": 101
+    }
+  },
+  "response_model_path_or_hf_id": "Qwen/Qwen3-Next-80B-A3B-Instruct",
+  "verifier_model_path_or_hf_id": "meta-llama/Llama-3.1-8B-Instruct",
+  "layers_response": [
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+  ],
+  "layers_verifier": [
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32
+  ],
+  "encoder_device": "cuda",
+  "probe_device": "cuda",
+  "resolved_encoder_device": "cuda",
+  "resolved_probe_device": "cuda",
+  "encoder_device_map": "auto",
+  "probe_seeds": [
+    11,
+    22,
+    33
+  ],
+  "lambda_step": 0.05,
+  "ce_threshold": 1.0,
+  "method_notes": [
+    "Last-token hidden state probing with per-layer selection (validation AUROC).",
+    "4-layer FFN probes (dim->256->128->64->1) + ReLU as in paper.",
+    "Cross-model fusion with lambda grid 0..1 step 0.05 (configurable).",
+    "CE/IE balanced subset construction from existing evaluated labels (CE threshold=1.00).",
+    "Dataset/protocol differences from paper remain possible (e.g., benchmark and sampling k)."
+  ],
+  "outputs": {
+    "metrics_by_seed_csv": "/scratch/ssimran5/LLM_Hallucination_Measure/wb_probe_out/Qwen3_Next_80B_(OpenRouter)_Llama-3.1-8B-Instruct/wb_cross_model_probe_emnlp2025_metrics_by_seed.csv",
+    "metrics_summary_csv": "/scratch/ssimran5/LLM_Hallucination_Measure/wb_probe_out/Qwen3_Next_80B_(OpenRouter)_Llama-3.1-8B-Instruct/wb_cross_model_probe_emnlp2025_metrics_summary.csv",
+    "test_scores_csv": "/scratch/ssimran5/LLM_Hallucination_Measure/wb_probe_out/Qwen3_Next_80B_(OpenRouter)_Llama-3.1-8B-Instruct/wb_cross_model_probe_emnlp2025_test_scores.csv"
+  },
+  "elapsed_seconds": 477.9378516674042
+}

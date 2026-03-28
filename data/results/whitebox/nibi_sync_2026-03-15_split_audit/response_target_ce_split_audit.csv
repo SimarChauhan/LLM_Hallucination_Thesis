@@ -1,0 +1,6 @@
+run_dir,target,response,verifier,ce_pool_total,ce_pool_correct,ce_pool_ce,train_total,train_correct,train_ce,val_total,val_correct,val_ce,test_total,test_correct,test_ce,metrics_test_n_values,metrics_test_pos_rate_values,test_n_matches,test_positive_rate_matches
+Llama_4_Maverick_17B_(Groq)_Llama-3.1-8B-Instruct,Llama 4 Maverick 17B (Groq),meta-llama/Llama-4-Maverick-17B-128E-Instruct,meta-llama/Llama-3.1-8B-Instruct,250,125,125,209,106,103,19,10,9,22,9,13,22,0.590909,True,True
+Llama_4_Maverick_17B_(Groq)_Qwen2.5-0.5B-Instruct,Llama 4 Maverick 17B (Groq),meta-llama/Llama-4-Maverick-17B-128E-Instruct,Qwen/Qwen2.5-0.5B-Instruct,250,125,125,209,106,103,19,10,9,22,9,13,22,0.590909,True,True
+Llama_4_Maverick_17B_(Groq)_Qwen3-Next-80B-A3B-Instruct,Llama 4 Maverick 17B (Groq),meta-llama/Llama-4-Maverick-17B-128E-Instruct,Qwen/Qwen3-Next-80B-A3B-Instruct,250,125,125,209,106,103,19,10,9,22,9,13,22,0.590909,True,True
+Qwen3_Next_80B_(OpenRouter)_Llama-3.1-8B-Instruct,Qwen3 Next 80B (OpenRouter),Qwen/Qwen3-Next-80B-A3B-Instruct,meta-llama/Llama-3.1-8B-Instruct,292,146,146,240,120,120,22,10,12,30,16,14,30,0.466667,True,True
+Qwen3_Next_80B_(OpenRouter)_Qwen2.5-0.5B-Instruct,Qwen3 Next 80B (OpenRouter),Qwen/Qwen3-Next-80B-A3B-Instruct,Qwen/Qwen2.5-0.5B-Instruct,292,146,146,240,120,120,22,10,12,30,16,14,30,0.466667,True,True
