@@ -19,10 +19,10 @@ This folder contains strict CE overlap artifacts generated on 2026-03-27.
 ## Files
 
 - `cross_model_ce_overlap_semantic_nlihybrid_t1p0.csv`
-- `cross_model_ce_semantic_overlap_nlihybrid_t1p0.tex`
 - `cross_model_ce_overlap_semantic.csv` (canonical strict copy)
-- `cross_model_ce_semantic_overlap.tex` (canonical strict copy)
 - `summary_t1p0_nlihybrid.json`
+
+Note: `.tex` table exports are intentionally not tracked in this curated repository.
 
 ## Reproduction command
 

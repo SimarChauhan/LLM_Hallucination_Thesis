@@ -52,3 +52,7 @@ logs/
 
 # Known large generated artifact (kept out of git)
 data/results/analysis/version_evolution_equiv_only_20260319/combined_version_evolution_equiv_only.jsonl
+
+# Keep only manuscript source; ignore other LaTeX sources
+*.tex
+!thesis.tex
