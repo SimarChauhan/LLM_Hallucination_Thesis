@@ -50,7 +50,16 @@ python scripts/reeval_results.py --help
 python scripts/analyze_results.py --help
 ```
 
-### 4. Build the thesis PDF locally
+### 4. Verify reproducibility from included artifacts
+
+```bash
+python scripts/verify_reproducibility_bundle.py
+python scripts/validate_report_numbers.py
+```
+
+Detailed runbook: `docs/reproducibility.md`
+
+### 5. Build the thesis PDF locally
 
 ```bash
 latexmk -pdf thesis.tex

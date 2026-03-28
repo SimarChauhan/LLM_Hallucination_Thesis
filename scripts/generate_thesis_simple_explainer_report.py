@@ -28,8 +28,12 @@ import pandas as pd
 import seaborn as sns
 
 
-BASE = Path("/Users/simar/LLM_Hallucination_Measure")
-FINAL_JSONL = BASE / "data/results/evaluated/results_v2_phase2_eval_no_gemini_4842.final.analysis_ready.jsonl"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+BASE = Path(os.environ.get("PROJECT_ROOT", str(REPO_ROOT)))
+FINAL_JSONL_CANDIDATES = [
+    BASE / "data/results/evaluated/results_v2_phase2_eval_no_gemini_4842.final.analysis_ready.jsonl",
+    BASE / "data/results/evaluated/results_v2_phase2_eval_no_gemini_4842.final.analysis_ready.skip_greedy_semantic_eval.jsonl",
+]
 TRUTHFULQA_CSV = BASE / "TruthfulQA.csv"
 ANALYSIS_DIR = BASE / "data/results/analysis/final_analysis_ready"
 
@@ -57,6 +61,16 @@ LABEL_PRETTY = {
     "inconsistent_error": "Incorrect + different meaning",
     "not_attempted": "NOT_ATTEMPTED",
 }
+
+
+def first_existing(paths: List[Path]) -> Path:
+    for path in paths:
+        if path.exists():
+            return path
+    raise FileNotFoundError(
+        "Could not find an evaluated JSONL. Checked: "
+        + ", ".join(str(p) for p in paths)
+    )
 
 
 def b(v: Any) -> bool:
@@ -146,7 +160,8 @@ def mcnemar_p(b_only: int, c_only: int) -> float:
 
 
 def load_data() -> Dict[str, Any]:
-    rows = [json.loads(line) for line in FINAL_JSONL.read_text(encoding="utf-8").splitlines() if line.strip()]
+    final_jsonl = first_existing(FINAL_JSONL_CANDIDATES)
+    rows = [json.loads(line) for line in final_jsonl.read_text(encoding="utf-8").splitlines() if line.strip()]
     df = pd.DataFrame(rows)
     df["q_idx"] = df["question_id"].map(qid_to_idx)
     df["is_correct"] = df["greedy_correct"].map(b)

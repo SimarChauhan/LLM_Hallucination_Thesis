@@ -21,14 +21,28 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-BASE = Path('/Users/simar/LLM_Hallucination_Measure')
+REPO_ROOT = Path(__file__).resolve().parents[1]
+BASE = Path(os.environ.get("PROJECT_ROOT", str(REPO_ROOT)))
 ANALYSIS_DIR = BASE / 'data/results/analysis/final_analysis_ready'
-FINAL_JSONL = BASE / 'data/results/evaluated/results_v2_phase2_eval_no_gemini_4842.final.analysis_ready.jsonl'
+FINAL_JSONL_CANDIDATES = [
+    BASE / 'data/results/evaluated/results_v2_phase2_eval_no_gemini_4842.final.analysis_ready.jsonl',
+    BASE / 'data/results/evaluated/results_v2_phase2_eval_no_gemini_4842.final.analysis_ready.skip_greedy_semantic_eval.jsonl',
+]
 TRUTHFULQA_CSV = BASE / 'TruthfulQA.csv'
 
 OUT_DIR = ANALYSIS_DIR / 'latex_report'
 FIG_DIR = OUT_DIR / 'figures'
 REPORT_THRESHOLDS = [1.0, 0.9, 0.8]
+
+
+def first_existing(paths: List[Path]) -> Path:
+    for path in paths:
+        if path.exists():
+            return path
+    raise FileNotFoundError(
+        "Could not find an evaluated JSONL. Checked: "
+        + ", ".join(str(p) for p in paths)
+    )
 
 
 def tex_escape(value: object) -> str:
@@ -80,6 +94,7 @@ def setup_dirs() -> None:
 
 
 def load_data() -> Dict[str, object]:
+    final_jsonl = first_existing(FINAL_JSONL_CANDIDATES)
     summary = json.loads((ANALYSIS_DIR / 'thesis_deep_analysis_summary.json').read_text(encoding='utf-8'))
     model_df = pd.read_csv(ANALYSIS_DIR / 'thesis_deep_model_metrics.csv')
     group_df = pd.read_csv(ANALYSIS_DIR / 'thesis_deep_group_metrics.csv')
@@ -88,7 +103,7 @@ def load_data() -> Dict[str, object]:
     rank_sim_df = pd.read_csv(ANALYSIS_DIR / 'thesis_deep_category_rank_similarity.csv')
     pair_df = pd.read_csv(ANALYSIS_DIR / 'thesis_deep_pairwise_significance.csv')
 
-    records = [json.loads(line) for line in FINAL_JSONL.read_text(encoding='utf-8').splitlines() if line.strip()]
+    records = [json.loads(line) for line in final_jsonl.read_text(encoding='utf-8').splitlines() if line.strip()]
     final_df = pd.DataFrame(records)
 
     truthfulqa = pd.read_csv(TRUTHFULQA_CSV).reset_index(drop=False).rename(

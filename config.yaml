@@ -194,7 +194,7 @@ hybrid:
     correctness_max_new_tokens: 260
 
   # Optional frozen calibration artifact from scripts/calibrate_hybrid_thresholds.py
-  calibration_file: /Users/simar/LLM_Hallucination_Measure/data/calibration/hybrid_thresholds_frozen.json
+  calibration_file: data/calibration/hybrid_thresholds_frozen.json
 
 # =============================================================================
 # DATASET CONFIGURATION
@@ -281,7 +281,7 @@ rate_limit:
 # NLI threshold calibration from human annotations; annotation sample size for export
 calibration:
   nli_calibration_file: null           # path to JSON with calibrated entailment/different thresholds
-  hybrid_calibration_file: /Users/simar/LLM_Hallucination_Measure/data/calibration/hybrid_thresholds_frozen.json
+  hybrid_calibration_file: data/calibration/hybrid_thresholds_frozen.json
   annotation_sample_size: 50           # default size for --export-annotation-sample
 
 # =============================================================================

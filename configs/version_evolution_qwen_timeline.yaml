@@ -92,7 +92,7 @@ hybrid:
     model: gpt-5.2
     equivalence_max_new_tokens: 220
     correctness_max_new_tokens: 260
-  calibration_file: /Users/simar/LLM_Hallucination_Measure/data/calibration/hybrid_thresholds_frozen.json
+  calibration_file: data/calibration/hybrid_thresholds_frozen.json
 dataset:
   name: truthful_qa
   source: csv
@@ -140,7 +140,7 @@ rate_limit:
   backoff_factor: 2.0
 calibration:
   nli_calibration_file: null
-  hybrid_calibration_file: /Users/simar/LLM_Hallucination_Measure/data/calibration/hybrid_thresholds_frozen.json
+  hybrid_calibration_file: data/calibration/hybrid_thresholds_frozen.json
   annotation_sample_size: 50
 output:
   results_dir: data/results

@@ -27,7 +27,7 @@ This folder contains strict CE overlap artifacts generated on 2026-03-27.
 ## Reproduction command
 
 ```bash
-venv/bin/python scripts/compute_shared_ce_analysis.py \
+python scripts/compute_shared_ce_analysis.py \
   --ce-thresholds 1.0 \
   --equivalence-method nli_hybrid \
   --nli-batch-size 16 \

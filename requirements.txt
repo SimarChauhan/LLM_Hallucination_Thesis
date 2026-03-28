@@ -12,12 +12,16 @@ transformers>=4.36.0
 sentencepiece>=0.1.99  # Required for some tokenizers
 
 # Data processing
+numpy>=1.26.0
 pandas>=2.0.0
 pyarrow>=14.0.0  # For Parquet support
+scikit-learn>=1.4.0
 
 # Visualization
 matplotlib>=3.8.0
 seaborn>=0.13.0
+Pillow>=10.0.0
+reportlab>=4.0.0
 
 # Configuration
 pyyaml>=6.0.0

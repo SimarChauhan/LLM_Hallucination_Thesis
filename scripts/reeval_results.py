@@ -66,6 +66,7 @@ from tqdm import tqdm
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 from src.correctness import check_correctness
 from src.hybrid_judging import (
@@ -80,9 +81,9 @@ from src.semantic_entropy import compute_semantic_entropy, classify_error_by_ent
 from src.schemas import ResultRecord, EquivalenceStats
 from src.storage import ResultStorage
 
-# Load environment variables (CWD first; then main repo so worktree runs see RESULTS_DIR_ABSOLUTE)
+# Load environment variables (CWD first, then repository root).
 load_dotenv()
-load_dotenv(Path.home() / "LLM_Hallucination_Measure" / ".env", override=False)
+load_dotenv(REPO_ROOT / ".env", override=False)
 
 # Configure logging
 logging.basicConfig(
