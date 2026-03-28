@@ -1740,7 +1740,7 @@ All runs used three random seeds (11, 22, 33) and question-level
 \begin{table}[H]
 \centering
 \footnotesize
-\begin{tabular}{lrc}
+\begin{tabularx}{0.92\linewidth}{>{\raggedright\arraybackslash}Xcc}
 \toprule
 Run Group & Dirs & Status \\
 \midrule
@@ -1750,7 +1750,7 @@ Original cross-model probing (Tan et al.) & 5 & Complete \\
 \midrule
 \textbf{Total}           & \textbf{17} & \\
 \bottomrule
-\end{tabular}
+\end{tabularx}
 \caption{Nibi run inventory (March~15, 2026 sync). All runs used
 probe seeds 11, 22, 33; CE threshold 1.0; question-level splits
 80/10/10.}
@@ -1771,9 +1771,10 @@ pipeline, in the order they arise during a run.
 Each model received the same short prompt:
 
 \begin{quote}
-\small\textit{Answer the following question concisely and directly
-in one or two sentences. Do not explain your reasoning.\newline
-Question: \{question\}}
+\small\textit{Answer the following question with a short, factual
+answer. Give only the answer, no explanation.\newline
+Question: \{question\}\newline
+Answer:}
 \end{quote}
 
 This format was chosen for three reasons. Short factual answers
@@ -1782,8 +1783,9 @@ reliable. No hedging instruction (e.g.\ ``say I don't know if
 unsure'') was added, because that would push uncertain models into
 the Not Attempted category and suppress CE rates artificially; the
 goal was to capture each model's natural behaviour. Chain-of-thought
-prompting was also omitted, since reasoning traces would change what
-the model outputs and complicate direct comparison with prior work
+prompting was also omitted for model generation, since reasoning
+traces would change what the model outputs and complicate direct
+comparison with prior work
 \citep{lin2022truthfulqa, tan2025consistent}.
 
 \subsection*{D.2 The ``Not Attempted'' Label}
