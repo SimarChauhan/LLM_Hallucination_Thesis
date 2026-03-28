@@ -22,7 +22,7 @@ The repository covers three components:
 - `configs/`: model and run configurations.
 - `data/`: curated input and result artifacts used by analyses in this thesis.
 - `tests/`: automated checks for key pipeline components.
-- `docs/`: project notes and report source files.
+- `docs/`: project notes and reproducibility guides.
 
 ## Quick Start
 
