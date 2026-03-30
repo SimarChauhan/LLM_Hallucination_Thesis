@@ -10,7 +10,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 2) Bundle Integrity Check (fast)
+## 2) Bundle Integrity Check 
 
 ```bash
 python scripts/verify_reproducibility_bundle.py
@@ -23,7 +23,7 @@ Expected core checks include:
 - O3 summary rows across 12 model versions: `9684`
 - white-box run reports present: `18`
 
-## 3) O1 Thesis Number Verification (rigorous table checks)
+## 3) O1 Thesis Number Verification 
 
 ```bash
 python scripts/validate_report_numbers.py
