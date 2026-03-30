@@ -1,4 +1,4 @@
-# Results directory layout (curated thesis bundle)
+# Results directory layout 
 
 This repository keeps only the artifacts needed to audit and reproduce thesis numbers.
 
