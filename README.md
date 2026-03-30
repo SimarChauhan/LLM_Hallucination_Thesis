@@ -4,7 +4,7 @@ This repository is a curated, thesis-only version of the research workspace for:
 
 **Self-Consistent Error Detection in Closed and Open Large Language Models: A Black-Box and White-Box Comparative Study**
 
-It includes the manuscript source, analysis code, experiment configuration, and data artifacts required to inspect and reproduce the thesis results. Generated reports, temporary files, local environments, and non-essential outputs were removed.
+It includes analysis code, experiment configuration, and data artifacts required to inspect and reproduce the thesis results. Generated reports, temporary files, local environments, and non-essential outputs were removed.
 
 ## Scope
 
@@ -16,7 +16,6 @@ The repository covers three components:
 
 ## Repository Structure
 
-- `thesis.tex`, `references.bib`: thesis manuscript source.
 - `src/`: core pipeline modules (inference, labeling, equivalence, reliability, storage).
 - `scripts/`: runnable experiment and analysis scripts.
 - `configs/`: model and run configurations.
@@ -59,15 +58,10 @@ python scripts/validate_report_numbers.py
 
 Detailed runbook: `docs/reproducibility.md`
 
-### 5. Build the thesis PDF locally
-
-```bash
-latexmk -pdf thesis.tex
-```
-
 ## Notes
 
 - This repository intentionally excludes generated PDFs, figure images, LaTeX build artifacts, cache files, and temporary folders.
+- The thesis manuscript/PDF is submitted separately; this repository focuses on analysis and reproducibility.
 - Data files are retained in a form suitable for result verification and audit.
 
 ## License
