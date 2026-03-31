@@ -1,27 +1,39 @@
-# Thesis Repository: Self-Consistent Error Detection in LLMs
+# LLM Hallucination Thesis Reproducibility Repository
 
-This repository is a curated, thesis-only version of the research workspace for:
+This repository contains the code, configurations, and curated artifacts used in the thesis:
 
-**Self-Consistent Error Detection in Closed and Open Large Language Models: A Black-Box and White-Box Comparative Study**
+**Measuring Self-Consistent Errors in Large Language Models and Detecting Them via Proxy Cross-Model Probing**
 
-It includes analysis code, experiment configuration, and data artifacts required to inspect and reproduce the thesis results. Generated reports, temporary files, local environments, and non-essential outputs were removed.
+The manuscript/PDF is submitted separately. This repository focuses on analysis and reproducibility.
 
 ## Scope
 
-The repository covers three components:
+The repository supports three thesis objectives:
 
-1. Black-box measurement of self-consistent errors (CE) and inconsistent errors (IE) on TruthfulQA.
-2. White-box probing experiments for CE detection.
-3. Version-evolution analysis of CE behavior across model generations.
+1. **O1 (Black-box CE measurement):** measure self-consistent errors (CE) and inconsistent errors (IE) on TruthfulQA.
+2. **O2 (White-box probing):** detect CE using cross-model probing with proxy encoders.
+3. **O3 (Version evolution):** track CE behavior across model generations.
+
+## Final Report Snapshot (Key Numbers)
+
+These are the thesis-reported headline results reproduced from included artifacts:
+
+- **Main evaluated rows:** `4,842` (`807 questions x 6 models`)
+- **Overall counts:** `Correct=3,063`, `Incorrect=1,560`, `Not Attempted=219`
+- **CE at t=1.0:** `656` rows (`13.5%` of all rows; `42.1%` of incorrect rows)
+- **Cross-model overlap (t=1.0):** `total overlap=720`, `same wrong=529`, `same-wrong rate=73.5%`
+- **Jaccard range (pairwise CE overlap):** `0.219` to `0.360`
+- **White-box run reports present:** `18`
+- **Version-evolution rows:** `9,684` (`12 models x 807`)
 
 ## Repository Structure
 
-- `src/`: core pipeline modules (inference, labeling, equivalence, reliability, storage).
-- `scripts/`: runnable experiment and analysis scripts.
-- `configs/`: model and run configurations.
-- `data/`: curated input and result artifacts used by analyses in this thesis.
-- `tests/`: automated checks for key pipeline components.
-- `docs/`: project notes and reproducibility guides.
+- `src/`: core pipeline modules (inference, labeling, equivalence, reliability, storage)
+- `scripts/`: experiment and analysis scripts
+- `configs/`: model and run configurations
+- `data/`: curated input and result artifacts used by the thesis analyses
+- `tests/`: automated checks for key components
+- `docs/`: reproducibility and supporting documentation
 
 ## Quick Start
 
@@ -39,30 +51,49 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Add API credentials as needed in `.env`.
+Add API credentials in `.env` if you plan to run API-backed collection steps.
 
-### 3. Run the pipeline
+## Reproducibility Checks
 
-```bash
-python scripts/run_pipeline.py --help
-python scripts/reeval_results.py --help
-python scripts/analyze_results.py --help
-```
-
-### 4. Verify reproducibility from included artifacts
+### A) Verify bundle integrity and key totals
 
 ```bash
 python scripts/verify_reproducibility_bundle.py
+```
+
+### B) Validate thesis-reported numbers
+
+```bash
 python scripts/validate_report_numbers.py
+```
+
+### C) Recompute selected analyses
+
+```bash
+# O1 cross-model CE overlap (strict t=1.0)
+python scripts/compute_shared_ce_analysis.py \
+  --ce-thresholds 1.0 \
+  --equivalence-method nli_hybrid \
+  --nli-batch-size 16 \
+  --write-canonical-1p0 \
+  --output-dir data/results/analysis/cross_model_ce_overlap_t1p0_20260327
+
+# O3 version-evolution package
+python scripts/rebuild_version_evolution_package.py
+
+# O2 white-box probe summary aggregation
+python scripts/summarize_synced_wb_probe_runs.py \
+  --artifacts-root data/results/whitebox/nibi_sync_2026-03-15/live_pull \
+  --output-dir data/results/analysis/whitebox_repro_summary
 ```
 
 Detailed runbook: `docs/reproducibility.md`
 
 ## Notes
 
-- This repository intentionally excludes generated PDFs, figure images, LaTeX build artifacts, cache files, and temporary folders.
-- The thesis manuscript/PDF is submitted separately; this repository focuses on analysis and reproducibility.
-- Data files are retained in a form suitable for result verification and audit.
+- This repository excludes generated PDFs, LaTeX build artifacts, caches, and other temporary files.
+- Artifacts needed to audit and reproduce reported numbers are retained.
+- Full API reruns may require external credentials, compute time, and model availability.
 
 ## License
 
