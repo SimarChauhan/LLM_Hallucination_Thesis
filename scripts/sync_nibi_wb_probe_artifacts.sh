@@ -22,8 +22,6 @@ SSH_CONTROL_DIR="${SSH_CONTROL_DIR:-/tmp/wb_probe_ssh_mux}"
 SKIP_SUMMARY="${SKIP_SUMMARY:-0}"
 SUMMARY_SCRIPT=""
 SUMMARY_OUTPUT_DIR=""
-SKIP_REPORT="${SKIP_REPORT:-0}"
-REPORT_SCRIPT=""
 
 usage() {
   cat <<'EOF'
@@ -43,8 +41,6 @@ Options:
   --skip-summary               Disable local post-sync summary generation
   --summary-script PATH        Override summary script path
   --summary-output-dir PATH    Override summary output directory
-  --skip-report                Disable post-sync WB-vs-blackbox report generation
-  --report-script PATH         Override report generation script path
   -h, --help                   Show this message
 
 Examples:
@@ -92,14 +88,6 @@ while [[ $# -gt 0 ]]; do
       SUMMARY_OUTPUT_DIR="$2"
       shift 2
       ;;
-    --skip-report)
-      SKIP_REPORT=1
-      shift
-      ;;
-    --report-script)
-      REPORT_SCRIPT="$2"
-      shift 2
-      ;;
     -h|--help)
       usage
       exit 0
@@ -121,19 +109,12 @@ if ! [[ "$SKIP_SUMMARY" =~ ^[01]$ ]]; then
   echo "ERROR: --skip-summary expects no value; use flag only." >&2
   exit 1
 fi
-if ! [[ "$SKIP_REPORT" =~ ^[01]$ ]]; then
-  echo "ERROR: --skip-report expects no value; use flag only." >&2
-  exit 1
-fi
 
 if [[ -z "$SUMMARY_SCRIPT" ]]; then
   SUMMARY_SCRIPT="${PROJECT_ROOT}/scripts/summarize_synced_wb_probe_runs.py"
 fi
 if [[ -z "$SUMMARY_OUTPUT_DIR" ]]; then
   SUMMARY_OUTPUT_DIR="${LOCAL_DEST}/summaries"
-fi
-if [[ -z "$REPORT_SCRIPT" ]]; then
-  REPORT_SCRIPT="${PROJECT_ROOT}/scripts/generate_wb_blackbox_comparison_report.py"
 fi
 
 mkdir -p "${LOCAL_DEST}/slurm_logs" "${LOCAL_DEST}/wb_probe_out" "${LOCAL_DEST}/job_history"
@@ -215,15 +196,6 @@ sync_once() {
         --output-dir "${SUMMARY_OUTPUT_DIR}" || echo "[sync] warning: summary generation failed" >&2
     else
       echo "[sync] warning: summary script not found: ${SUMMARY_SCRIPT}" >&2
-    fi
-  fi
-
-  if [[ "$SKIP_REPORT" -eq 0 ]]; then
-    if [[ -f "${REPORT_SCRIPT}" ]]; then
-      echo "[sync] updating WB-vs-blackbox report"
-      python3 "${REPORT_SCRIPT}" || echo "[sync] warning: report generation failed" >&2
-    else
-      echo "[sync] warning: report script not found: ${REPORT_SCRIPT}" >&2
     fi
   fi
 
