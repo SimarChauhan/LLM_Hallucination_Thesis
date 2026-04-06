@@ -70,3 +70,13 @@ python scripts/summarize_synced_wb_probe_runs.py \
   --artifacts-root data/results/whitebox/nibi_sync_2026-03-15/live_pull \
   --output-dir data/results/analysis/whitebox_repro_summary
 ```
+
+## 7) Optional: sync probe artifacts from a remote cluster
+
+To rsync Slurm logs and `wb_probe_out` from a configured remote into `downloads/nibi_wb_probe/` (or `LOCAL_DEST`) and refresh the CSV summaries:
+
+```bash
+bash scripts/sync_nibi_wb_probe_artifacts.sh
+```
+
+Add `--skip-summary` if you only want the file sync. This repository does not ship a separate post-sync “WB vs black-box” report generator; use `summarize_synced_wb_probe_runs.py` (above) or your own analysis on the synced paths.

@@ -92,6 +92,16 @@ python scripts/summarize_synced_wb_probe_runs.py \
 
 Detailed runbook: `docs/reproducibility.md`
 
+### D) Optional: sync white-box probe artifacts from a cluster
+
+If you maintain probe outputs on a remote host (e.g. Alliance Canada), you can pull logs and `wb_probe_out` locally and refresh summary tables:
+
+```bash
+bash scripts/sync_nibi_wb_probe_artifacts.sh
+```
+
+By default this also runs `scripts/summarize_synced_wb_probe_runs.py` into `<dest>/summaries`. Use `--skip-summary` to disable. (There is no bundled post-sync comparison report script in this repository.)
+
 ## Notes
 
 - Generated PDFs, LaTeX build artifacts, caches, and temporary files are intentionally excluded.
